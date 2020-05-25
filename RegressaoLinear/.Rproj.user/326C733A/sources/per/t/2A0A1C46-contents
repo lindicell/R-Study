@@ -1,0 +1,67 @@
+#
+# ML: regressao linear simples
+#
+setwd("c:/Faculdade/CienciaDados/Aula14")
+#
+# Leitura da base de dados e analise
+
+base <- read.csv('valor_imovel.csv')
+View(base)
+str(base)
+
+
+##############################################################
+#
+# ETAPA: Mineracao de dados 
+#
+#############################################################
+
+#
+# Divisao da base entre treinamento e teste
+#
+#install.packages("caTools")
+library(caTools)
+set.seed(1)             #gera uma matrix aleatória de dados igual para todos terem os mesmos registros nas bases divididas
+
+divisao <- sample.split(base$price, SplitRatio = 0.70)
+base_treinamento <- subset(base, divisao == TRUE)
+base_teste <- subset(base, divisao == FALSE)
+View(base_treinamento)
+View(base_teste)
+
+#
+# Geracao do modelo preditivo -> regressao linear simples
+#
+correlacao <- cor(base$sqft_living, base$price)   # analise de correlação 
+correlacao
+
+regressao <- lm(formula = price ~ sqft_living, data = base_treinamento)
+regressao
+
+summary(regressao) # possivel ver a acurácia na base de treinamento
+
+plot(base_treinamento$price ~ base_treinamento$sqft_living, xlab = "Tamanho", ylab = "Preço Casa")
+abline(regressao, col = 'blue')
+#
+# Avaliacao do modelo
+#
+previsoes <- predict(regressao, newdata = base_teste[6])
+View(previsoes)
+
+# diferenca entre o valor real e o calculado para cada linha
+diferenca <- abs(base_teste[3] - previsoes)
+View(diferenca)
+
+# media de diferenca: pode ser para + ou para -
+mean(diferenca$price)
+
+# acurácia do modelo na base de teste
+#install.packages('miscTools')
+library(miscTools)
+acuracia <- rSquared(base_teste$price, resid = base_teste$price - previsoes)
+acuracia
+
+
+
+
+

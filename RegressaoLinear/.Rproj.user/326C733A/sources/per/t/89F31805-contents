@@ -1,0 +1,70 @@
+#
+# ML: regressao linear multipla
+#
+setwd("c:/Faculdade/CienciaDados/Aula14")
+#
+# Leitura da base de dados e analise
+base <- read.csv('valor_imovel.csv')
+View(base)
+str(base)
+
+
+##############################################################
+#
+# ETAPA: Transformacao
+#
+#############################################################
+
+# Apagar a colunas id, date, sqft_living15, sqft_lot15, sqft_basement
+
+base$id <- NULL
+base$date <- NULL
+base$sqft_living15 <- NULL
+base$sqft_lot15 <- NULL
+#base$sqft_basement <- NULL # observar o summary antes de executar esta linha
+
+##############################################################
+#
+# ETAPA: Mineracao de dados 
+#
+#############################################################
+
+#
+# Divisao da base entre treinamento e teste
+#
+#install.packages("caTools")
+library(caTools)
+set.seed(1)             #gera uma matrix aleatória de dados igual para todos terem os mesmos registros nas bases divididas
+
+divisao <- sample.split(base$price, SplitRatio = 0.70)
+base_treinamento <- subset(base, divisao == TRUE)
+base_teste <- subset(base, divisao == FALSE)
+View(base_treinamento)
+View(base_teste)
+
+#
+# Geracao do modelo preditivo -> regressao linear múltipla
+#
+regressor <- lm(formula = price ~ ., data = base_treinamento)
+summary(regressor)
+
+
+#
+# Avaliacao do modelo
+#
+previsoes <- predict(regressor, newdata = base_teste[-1])
+View(previsoes)
+
+
+# diferenca entre o valor real e o calculado para cada linha
+diferenca <- abs(base_teste$price - previsoes)
+View(diferenca)
+
+# media de diferenca: pode ser para + ou para -
+mean(diferenca)
+
+# acurácia do modelo na base de teste
+#install.packages('miscTools')
+library(miscTools)
+acuracia <- rSquared(base_teste$price, resid = base_teste$price - previsoes)
+acuracia

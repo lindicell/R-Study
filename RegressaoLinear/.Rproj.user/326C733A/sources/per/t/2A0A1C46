@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590104905276.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3659360301",
+    "id" : "2A0A1C46",
+    "lastKnownWriteTime" : 1589833924,
+    "last_content_update" : 1589833924,
+    "path" : "~/Desktop/Arquivos/regressao_linear_simples_valorImovel.R",
+    "project_path" : "regressao_linear_simples_valorImovel.R",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
